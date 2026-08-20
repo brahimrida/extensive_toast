@@ -1,0 +1,1 @@
+enum ToastVersion { version1, version2, version3, custom }
