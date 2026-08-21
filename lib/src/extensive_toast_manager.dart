@@ -19,11 +19,14 @@ class ExtensiveToastManager {
   /// to know how many toasts are currently displayed
   static int get count => _toasts.length;
 
+  /// Inserts [toast] into the nearest (or root) [Overlay] and returns a
+  /// reference to it via [toastReference].
+  ///
   /// Use [rootOverlay] to choose whether the toast is displayed
   /// above the entire app (root overlay) or within the nearest
   /// local overlay scope (e.g. a nested Navigator's own overlay).
   ///
-  /// Note: this setting only controls *where the toast is shown*,
+  /// Note: [rootOverlay] only controls *where the toast is shown*,
   /// not where `onTap` navigation lands. The `context` your `onTap`
   /// callback receives is scoped to wherever the toast widget itself
   /// sits in the tree. If you navigate inside `onTap` using
@@ -33,19 +36,34 @@ class ExtensiveToastManager {
   /// (e.g. per-tab navigation). If your push isn't showing up until
   /// you switch screens, try `Navigator.of(context, rootNavigator: true)`
   /// explicitly inside your `onTap`.
+  ///
+  /// The toast may already be removed (e.g. after its display duration
+  /// elapses) by the time you act on the reference passed to
+  /// [toastReference]. Removing an already-removed toast is a safe
+  /// no-op, but you can call [isToastActive] first if you need to know
+  /// whether the toast is still showing.
   static void insertToast(
     BuildContext context, {
     required ExtensiveToast toast,
     bool rootOverlay = true,
+    Function(int toastRef)? toastReference,
   }) {
+    int ref = _nextRef++;
     final overlayStack = Overlay.of(context, rootOverlay: rootOverlay);
-    final extensiveToastEntry = toast.newToastEntry(_nextRef++);
+    final extensiveToastEntry = toast.newToastEntry(ref);
     overlayStack.insert(extensiveToastEntry.entry);
     _toasts.add(extensiveToastEntry);
+    toastReference?.call(ref);
   }
 
+  /// Returns `true` if the toast referenced by [ref] is still active
+  /// (i.e. hasn't been removed yet). Use this to guard manual removal
+  /// when relying on the `toastReference` callback from [insertToast],
+  /// since that reference can become stale.
+  static bool isToastActive(int ref) => _toasts.indexWhere((e) => e.ref == ref) >= 0;
 
-  /// removing a toast using the internally stored reference passed by the widget (toast widget) itself
+
+  /// Removing a toast by reference
   static void removeToast(int ref) {
     final index = _toasts.indexWhere((e) => e.ref == ref);
     if (index >= 0) {
@@ -54,7 +72,7 @@ class ExtensiveToastManager {
     }
   }
 
-  /// to fully wipe the managed toasts
+  /// To completely wipe the managed toasts
   static void clearAllToasts() {
     for (ExtensiveToastEntry toast in _toasts) {
       toast.entry.remove();
