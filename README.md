@@ -1,6 +1,37 @@
 # Flutter Toast Widget
 
 A customizable Flutter toast widget for displaying notifications, messages, errors, and other temporary UI feedback within your application.
+## Examples
+
+<table>
+  <tr>
+    <td><b>Automatically dismissed</b></td>
+    <td><b>Dismissed only on tap</b></td>
+    <td><b>Dismissed by swipe left or right</b></td>
+
+  </tr>
+  <tr>
+    <td width="33.3%"><img src="https://raw.githubusercontent.com/brahimrida/extensive_toast/refs/heads/main/gifs/1.gif" ></td>
+    <td width="33.3%"><img src="https://raw.githubusercontent.com/brahimrida/extensive_toast/refs/heads/main/gifs/4.gif" ></td>
+    <td width="33.3%"><img src="https://raw.githubusercontent.com/brahimrida/extensive_toast/refs/heads/main/gifs/3.gif"></td>
+
+  </tr>
+</table>
+<table>
+  <tr>
+    <td><b>Shown from the bottom</b></td>
+    <td><b>Example adding multiple toasts at once</b></td>
+
+ <td><b></b></td>
+  </tr>
+  <tr>
+    <td width="33.3%"><img src="https://raw.githubusercontent.com/brahimrida/extensive_toast/refs/heads/main/gifs/5.gif" ></td>
+    <td width="33.3%"><img src="https://raw.githubusercontent.com/brahimrida/extensive_toast/refs/heads/main/gifs/2.gif"></td>
+  </tr>
+</table>
+
+
+
 
 ## Features
 
@@ -87,6 +118,7 @@ ExtensiveToastManager.removeToast(toastReference);
 
 The toast reference is managed internally by the toast widget.
 
+
 ### Get the Toast Reference
 
 If you need to control a toast from outside the widget itself, you can provide the optional `toastReference` callback when inserting it.
@@ -114,6 +146,16 @@ ExtensiveToastManager.removeToast(toastRef);
 ```
 
 This allows you to control an individual toast from anywhere in your application.
+
+### Check if Your Reference For a Toast is Still Valid.
+
+Returns true if the toast is active:
+
+```dart
+ExtensiveToastManager.isToastActive(toastReference);
+```
+
+This allows you to have a clue if an individual toast was not removed.
 
 ## Additional Information
 
