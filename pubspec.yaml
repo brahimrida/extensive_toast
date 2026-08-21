@@ -1,6 +1,6 @@
 name: extensive_toast
 description: A lightweight, customizable toast/snackbar overlay manager for Flutter.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/brahimrida/extensive_toast
 repository: https://github.com/brahimrida/extensive_toast
 issue_tracker: https://github.com/brahimrida/extensive_toast/issues
