@@ -11,7 +11,6 @@ import 'src/extensive_toast_versions_enum.dart';
 import 'src/extensive_toast_widget.dart';
 import 'package:flutter/material.dart';
 
-
 /// toast class to create a custom toast
 /// it's what constructs a toast widget internally
 
@@ -87,10 +86,9 @@ class ExtensiveToast {
   final CrossAxisAlignment contentCrossAxisAlignment;
 
   /// pass a whole widget to override the existing content inside the toast
-  /// use in case you want to have your own content. 
+  /// use in case you want to have your own content.
   /// [important] set the toastVersion to custom when passing your own content
   final Widget? customContent;
-
 
   /// instance used to construct your toast
   ExtensiveToast({
@@ -133,7 +131,10 @@ class ExtensiveToast {
     padding: padding,
     margin: margin,
     shadows: shadows,
+    backgroundColor: backgroundColor,
     icon: icon,
+    titleTextColor: titleTextColor,
+    bodyTextColor: bodyTextColor,
     dismissAfter: dismissAfter,
     enterDuration: enterDuration,
     exitDuration: exitDuration,
