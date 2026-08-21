@@ -152,4 +152,67 @@ testWidgets('removes a toast by auto dismiss', (tester) async {
 
     expect(ExtensiveToastManager.count, 0);
 });
+
+  testWidgets('is toast active method test', (tester) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (context) {
+            return const SizedBox();
+          },
+        ),
+      ),
+    ),
+  );
+
+  final context = tester.element(find.byType(SizedBox));
+
+  int? firstToastRef;
+  int? secondToastRef;
+
+  ExtensiveToastManager.insertToast(
+    context,
+    toast:ExtensiveToast(
+      title: 'title',
+      body: 'body',
+    ),
+    toastReference: (ref) {
+      firstToastRef = ref;
+    }
+  );
+
+  expect(ExtensiveToastManager.count, 1);
+
+    ExtensiveToastManager.insertToast(
+    context,
+    toast:ExtensiveToast(
+      title: 'title',
+      body: 'body',
+    ),
+        toastReference: (ref) {
+      secondToastRef = ref;
+    }
+  );
+
+  expect(ExtensiveToastManager.count, 2);
+
+
+  expect(ExtensiveToastManager.isToastActive(firstToastRef!), true);
+  expect(ExtensiveToastManager.isToastActive(secondToastRef!), true);
+
+  ExtensiveToastManager.removeToast(firstToastRef!);
+
+  expect(ExtensiveToastManager.isToastActive(firstToastRef!), false);
+  expect(ExtensiveToastManager.isToastActive(secondToastRef!), true);
+
+  expect(ExtensiveToastManager.count, 1);
+
+  ExtensiveToastManager.removeToast(secondToastRef!);
+
+  expect(ExtensiveToastManager.isToastActive(secondToastRef!), false);
+
+  expect(ExtensiveToastManager.count, 0);
+  ExtensiveToastManager.clearAllToasts();
+});
 }
